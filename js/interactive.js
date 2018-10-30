@@ -1,6 +1,6 @@
 class Point {
-	constructor(x, y, {allowXMovement=true, allowYMovement=true}) {
-  	this.x = x;
+  constructor(x, y, {allowXMovement=true, allowYMovement=true}) {
+    this.x = x;
     this.y = y;
     this.allowXMovement = allowXMovement;
     this.allowYMovement = allowYMovement;
@@ -8,8 +8,8 @@ class Point {
 }
 
 class InteractiveDrawing {
-	constructor(div, height, width) {
-  	let canvas = document.createElement('canvas');
+  constructor(div, height, width) {
+    let canvas = document.createElement('canvas');
     canvas.setAttribute('height', height);
     canvas.setAttribute('width', width);
     div.appendChild(canvas);
@@ -19,7 +19,7 @@ class InteractiveDrawing {
     canvas.addEventListener("touchstart", evt => this._doMouseDown(evt.changedTouches[0]), false);
     canvas.addEventListener("touchend", evt => this._doMouseUp(evt.changedTouches[0]), false);
     canvas.addEventListener("touchmove", evt => {
-    	this._doMouseMove(evt.changedTouches[0]);
+      this._doMouseMove(evt.changedTouches[0]);
       evt.preventDefault();
     }, false);
     this.points = [];
@@ -64,9 +64,9 @@ class InteractiveDrawing {
 
     this._listenerAfterUpdate.forEach(listener => listener(ctx));
     
-  	this.points.forEach(point => {
+    this.points.forEach(point => {
       ctx.beginPath();
-    	ctx.arc(point.x, point.y, 4, 0, 2 * Math.PI);
+      ctx.arc(point.x, point.y, 4, 0, 2 * Math.PI);
       ctx.closePath();
       if (point == this._selectedPoint) {
         ctx.fillStyle = "rgb(0, 0, 0)";
@@ -83,21 +83,21 @@ class InteractiveDrawing {
   }
 
   addPoint(point) {
-  	this.points.push(point);
+    this.points.push(point);
     this.update();
   }
 
   _hyper(x1, y1, x2, y2) {
-  	return Math.sqrt(Math.pow(x1 - x2, 2) + Math.pow(y1 - y2, 2));
+    return Math.sqrt(Math.pow(x1 - x2, 2) + Math.pow(y1 - y2, 2));
   }
 
   _findPoint(x, y) {
-  	let found = null;
+    let found = null;
     let foundDist = 0;
-  	this.points.forEach(point => {
-    	const dist = this._hyper(x, y, point.x, point.y);
+    this.points.forEach(point => {
+      const dist = this._hyper(x, y, point.x, point.y);
       if (found === null || dist < foundDist) {
-      	found = point;
+        found = point;
         foundDist = dist;
       }
     });
