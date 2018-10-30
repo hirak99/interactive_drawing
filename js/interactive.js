@@ -35,6 +35,25 @@ class InteractiveDrawing {
     // TODO: Convert to property so that update() is called automatically.
     this.background = "rgba(255, 255, 0, 0.25)";
   }
+
+  drawXAxis(ctx, y, {zeroXAt=0, x1=0, x2=this.width, pixelsPerTick=null}) {
+    ctx.strokeStyle = "rgb(0, 0, 0)";
+    ctx.beginPath();
+    ctx.moveTo(x1, y);
+    ctx.lineTo(x2, y);
+    ctx.stroke();
+    if (pixelsPerTick != null) {
+      let startTickAt = zeroXAt % pixelsPerTick;
+      if (startTickAt < 0) startTickAt += pixelsPerTick;
+      for (let i = startTickAt; i <= x2; i += pixelsPerTick) {
+        ctx.beginPath();
+        ctx.moveTo(i, y + 3);
+        ctx.lineTo(i, y - 3);
+        ctx.stroke();
+      }
+    }
+  }
+
   update() {
     let ctx = this.canvas.getContext('2d');
     ctx.clearRect(0, 0, this.width, this.height);
@@ -57,17 +76,21 @@ class InteractiveDrawing {
       ctx.fill();
     });
   }
+
   addAfterUpdateListener(listener) {
     this._listenerAfterUpdate.push(listener);
     this.update();
   }
+
   addPoint(point) {
   	this.points.push(point);
     this.update();
   }
+
   _hyper(x1, y1, x2, y2) {
-  	return Math.sqrt(Math.pow(x1-x2, 2) + Math.pow(y1-y2, 2));
+  	return Math.sqrt(Math.pow(x1 - x2, 2) + Math.pow(y1 - y2, 2));
   }
+
   _findPoint(x, y) {
   	let found = null;
     let foundDist = 0;
@@ -83,21 +106,25 @@ class InteractiveDrawing {
     }
     return null;
   }
+
   _offsetEventCoords(event) {
     const rect = event.target.getBoundingClientRect();
     const x = event.clientX - rect.left; //x position within the element.
     const y = event.clientY - rect.top;  //y position within the element.
     return [x, y];
   }
+
   _doMouseDown(event) {
     const [x, y] = this._offsetEventCoords(event);
     this._selectedPoint = this._findPoint(x, y);
     this.update();
   }
+
   _doMouseUp(event) {
     this._selectedPoint = null;
     this.update();
   }
+
   _doMouseMove(event) {
     const point = this._selectedPoint;
     if (point === null) {

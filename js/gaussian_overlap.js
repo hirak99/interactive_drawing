@@ -1,5 +1,6 @@
 plotCiOverlap = () => {
-  const drawing = new InteractiveDrawing(document.getElementById("drawing"), 200, 4096);
+  const drawing = new InteractiveDrawing(
+      document.getElementById("drawing"), 200, 4096);
   drawing.background = null;
   const HALF_HEIGHT = 15;
   const CENTER1 = 30;
@@ -39,6 +40,10 @@ plotCiOverlap = () => {
   };
   
   drawing.addAfterUpdateListener(ctx => {
+    drawing.drawXAxis(
+        ctx,
+        CENTER2 + HALF_HEIGHT + 5,
+        {pixelsPerTick: PIXEL_PER_UNIT});
     drawLine = (p1, p2) => {
       ctx.fillStyle = "rgba(0, 128, 255, 0.25)";
       ctx.fillRect(p1.x, p1.y - HALF_HEIGHT, p2.x - p1.x, 2 * HALF_HEIGHT);
